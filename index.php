@@ -37,7 +37,7 @@ $hide = array (
 		'index.php',
 		'Thumbs',
 		'.htaccess',
-		'.htpasswd' 
+		'.htpasswd'
 );
 
 /*
@@ -56,7 +56,7 @@ $displayindex = false;
 /*
  * Allow uploads? - If enabled users will be able to upload files to any viewable directory. You should really only enable this if the area this script is in is already password protected.
  */
-$allowuploads = true;
+$allowuploads = false;
 
 /*
  * Upload Types - If you are allowing uploads but only want users to be able to upload file with specific extensions, you can specify these extensions below. All other file types will be rejected. Comment out this array to allow all file types to be uploaded.
@@ -83,7 +83,7 @@ $indexfiles = array (
 		'index.html',
 		'index.htm',
 		'default.htm',
-		'default.html' 
+		'default.html'
 );
 
 /*
@@ -117,7 +117,7 @@ $filetypes = array (
 		'avi' => 'video.gif',
 		'eps' => 'eps.gif',
 		'gz' => 'archive.png',
-		'asc' => 'sig.gif' 
+		'asc' => 'sig.gif'
 );
 
 /*
@@ -144,28 +144,28 @@ $startdir = $leadon;
 
 if ($_GET ['dir']) {
 	// check this is okay.
-	
+
 	if (substr ( $_GET ['dir'], - 1, 1 ) != '/') {
 		$_GET ['dir'] = strip_tags ( $_GET ['dir'] ) . '/';
 	}
-	
+
 	$dirok = true;
 	$dirnames = split ( '/', strip_tags ( $_GET ['dir'] ) );
 	for($di = 0; $di < sizeof ( $dirnames ); $di ++) {
-		
+
 		if ($di < (sizeof ( $dirnames ) - 2)) {
 			$dotdotdir = $dotdotdir . $dirnames [$di] . '/';
 		}
-		
+
 		if ($dirnames [$di] == '..') {
 			$dirok = false;
 		}
 	}
-	
+
 	if (substr ( $_GET ['dir'], 0, 1 ) == '/') {
 		$dirok = false;
 	}
-	
+
 	if ($dirok) {
 		$leadon = $leadon . strip_tags ( $_GET ['dir'] );
 	}
@@ -174,7 +174,7 @@ if ($_GET ['dir']) {
 if ($_GET ['download'] && $forcedownloads) {
 	$file = str_replace ( '/', '', $_GET ['download'] );
 	$file = str_replace ( '..', '', $file );
-	
+
 	if (file_exists ( $includeurl . $leadon . $file )) {
 		header ( "Content-type: application/x-download" );
 		header ( "Content-Length: " . filesize ( $includeurl . $leadon . $file ) );
@@ -192,7 +192,7 @@ if ($allowuploads && $_FILES ['file']) {
 			$upload = false;
 		}
 	}
-	
+
 	if ($uploadtypes) {
 		if (! in_array ( substr ( $_FILES ['file'] ['name'], strpos ( $_FILES ['file'] ['name'], '.' ) + 1, strlen ( $_FILES ['file'] ['name'] ) ), $uploadtypes )) {
 			$upload = false;
@@ -203,14 +203,14 @@ if ($allowuploads && $_FILES ['file']) {
 					$uploaderror .= ' and ';
 				else if ($i != 1)
 					$uploaderror .= ', ';
-				
+
 				$uploaderror .= '.' . strtoupper ( $v );
-				
+
 				$i ++;
 			}
 		}
 	}
-	
+
 	if ($upload) {
 		move_uploaded_file ( $_FILES ['file'] ['tmp_name'], $includeurl . $leadon . $_FILES ['file'] ['name'] );
 	}
@@ -236,13 +236,13 @@ if ($handle = opendir ( $opendir )) {
 				$discard = true;
 			}
 		}
-		
+
 		if ($discard)
 			continue;
 		if (@filetype ( $includeurl . $leadon . $file ) == "dir") {
 			if (! $showdirs)
 				continue;
-			
+
 			$n ++;
 			if ($_GET ['sort'] == "date") {
 				$key = @filemtime ( $includeurl . $leadon . $file ) . ".$n";
@@ -259,12 +259,12 @@ if ($handle = opendir ( $opendir )) {
 			} else {
 				$key = $n;
 			}
-			
+
 			if ($showtypes && ! in_array ( substr ( $file, strpos ( $file, '.' ) + 1, strlen ( $file ) ), $showtypes ))
 				unset ( $file );
 			if ($file)
 				$files [$key] = $file;
-			
+
 			if ($displayindex) {
 				if (in_array ( strtolower ( $file ), $indexfiles )) {
 					header ( "Location: $leadon$file" );
@@ -329,7 +329,7 @@ function f(n) {
 	<div id="container">
 		<h1>Directory Listing of <?php echo str_replace('\\', '', dirname(strip_tags($_SERVER['PHP_SELF']))).'/'.$leadon;?></h1>
 		<div id="breadcrumbs">
-			<a href="<?php echo strip_tags($_SERVER['PHP_SELF']);?>">home</a> 
+			<a href="<?php echo strip_tags($_SERVER['PHP_SELF']);?>">home</a>
   <?php
 		$breadcrumbs = split ( '/', str_replace ( $startdir, '', $leadon ) );
 		if (($bsize = sizeof ( $breadcrumbs )) > 0) {
@@ -339,12 +339,12 @@ function f(n) {
 				echo ' &gt; <a href="' . strip_tags ( $_SERVER ['PHP_SELF'] ) . '?dir=' . urlencode ( $sofar ) . '">' . $breadcrumbs [$bi] . '</a>';
 			}
 		}
-		
+
 		$baseurl = strip_tags ( $_SERVER ['PHP_SELF'] ) . '?dir=' . strip_tags ( $_GET ['dir'] ) . '&amp;';
 		$fileurl = 'sort=name&amp;order=asc';
 		$sizeurl = 'sort=size&amp;order=asc';
 		$dateurl = 'sort=date&amp;order=asc';
-		
+
 		switch ($_GET ['sort']) {
 			case 'name' :
 				if ($_GET ['order'] == 'asc')
@@ -354,7 +354,7 @@ function f(n) {
 				if ($_GET ['order'] == 'asc')
 					$sizeurl = 'sort=size&amp;order=desc';
 				break;
-			
+
 			case 'date' :
 				if ($_GET ['order'] == 'asc')
 					$dateurl = 'sort=date&amp;order=desc';
@@ -411,14 +411,14 @@ function f(n) {
 						alt="<?php echo $dirs[$i];?>" /><strong><?php echo $dirs[$i];?></strong>
 						<em>-</em> <?php echo date ("M d Y h:i:s A", filemtime($includeurl.$leadon.$dirs[$i]));?></a>
 				</div>
-	
+
 	<?php
 		if ($class == 'b')
 			$class = 'w';
 		else
 			$class = 'b';
 	}
-	
+
 	$arsize = sizeof ( $files );
 	for($i = 0; $i < $arsize; $i ++) {
 		$icon = 'unknown.png';
@@ -427,39 +427,38 @@ function f(n) {
 				'gif',
 				'png',
 				'jpeg',
-				'jpg' 
+				'jpg'
 		);
 		$thumb = '';
-		
+
 		if ($showthumbnails && in_array ( $ext, $supportedimages )) {
 			$thumb = '<span><img src="dlf/trans.gif" alt="' . $files [$i] . '" name="thumb' . $i . '" /></span>';
 			$thumb2 = ' onmouseover="o(' . $i . ', \'' . urlencode ( $leadon . $files [$i] ) . '\');" onmouseout="f(' . $i . ');"';
 		}
-		
+
 		if ($filetypes [$ext]) {
 			$icon = $filetypes [$ext];
 		}
-		
+
 		$filename = $files [$i];
 		if (strlen ( $filename ) > 43) {
 			$filename = substr ( $files [$i], 0, 40 ) . '...';
 		}
-		
+
 		$fileurl = $includeurl . $leadon . $files [$i];
 		if ($forcedownloads) {
 			$fileurl = $_SESSION ['PHP_SELF'] . '?dir=' . urlencode ( str_replace ( $startdir, '', $leadon ) ) . '&download=' . urlencode ( $files [$i] );
 		}
-		
-		
-// 		 obtaning dealer infor column 6
-		if ($f_handle = fopen ( $includeurl . $leadon . $file, "r" )) {
-			$first_line = fgetcsv ( $f_handle, "|" );
-			$dealer = $first_line [6] . "  ";
-			
-			fclose ( $fhandle );
-			
-			echo $dealer;
-			echo $first_line;
+
+		// obtaning dealer info -  column 6
+		$dealer = array();
+		if ($f_handle = fopen ( $includeurl . $leadon . $files [$i], "r" )) {
+
+
+			while ( $cvs_line = fgetcsv ( $f_handle, 10000, "|" ) != FALSE ) {
+				$dealer[] = $cvs_line [6];
+			}
+			fclose ( $f_handle );
 		} else {
 			echo error_get_last ();
 		}
@@ -469,13 +468,19 @@ function f(n) {
 					<a href="<?php echo $fileurl;?>" class="<?php echo $class;?>"
 						<?php echo $thumb2;?>> <img
 						src="<?php echo $includeurl; ?>dlf/<?php echo $icon;?>"
-						alt="<?php echo $files[$i];?>" /> 
-						<em><?php echo $dealer;?></em> 
-						<!-- <em> <input type="button"></em> -->
-						<strong><?php echo $filename;?></strong> <em><?php echo round(filesize($includeurl.$leadon.$files[$i])/1024);?>KB</em> 
-		
+						alt="<?php echo $files[$i];?>" />
+						<strong>
+								<?php
+								foreach ($dealer as $v){
+									echo "$v";
+									}
+								?>
+										</strong>
+						<!-- <em> <input type="button"></em> --> <strong><?php echo $filename;?></strong>
+						<em><?php echo round(filesize($includeurl.$leadon.$files[$i])/1024);?>KB</em>
+
 		<?php echo date ("M d Y h:i:s A", filemtime($includeurl.$leadon.$files[$i]));?><?php echo $thumb;?>
-	
+
 	</a>
 				</div>
 	<?php
@@ -488,7 +493,7 @@ function f(n) {
 
 
 			<!--upload section -->
-	
+
 	<?php
 	if ($allowuploads) {
 		$phpallowuploads = ( bool ) ini_get ( 'file_uploads' );
@@ -501,12 +506,12 @@ function f(n) {
 			case 'm' :
 				$phpmaxsize *= 1024;
 		}
-		
+
 		?>
 	<div id="upload">
 				<div id="uploadtitle">
 					<strong>File Upload</strong> (Max Filesize: <?php echo $phpmaxsize;?>KB)
-			
+
 			<?php if($uploaderror) echo '<div class="upload-error">'.$uploaderror.'</div>'; ?>
 		</div>
 				<div id="uploadcontent">
