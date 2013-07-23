@@ -450,13 +450,12 @@ function f(n) {
 			$fileurl = $_SESSION ['PHP_SELF'] . '?dir=' . urlencode ( str_replace ( $startdir, '', $leadon ) ) . '&download=' . urlencode ( $files [$i] );
 		}
 
-		// obtaning dealer info -  column 6
-		$dealer = array();
+		// obtaning dealer info - column 6
+		$dealer = array ();
 		if ($f_handle = fopen ( $includeurl . $leadon . $files [$i], "r" )) {
 
-
-			while ( $cvs_line = fgetcsv ( $f_handle, 10000, "|" ) != FALSE ) {
-				$dealer[] = $cvs_line [6];
+			while ( ($cvs_line = fgetcsv ( $f_handle, 10000, "|" )) != FALSE ) {
+				$dealer [] = $cvs_line [6];
 			}
 			fclose ( $f_handle );
 		} else {
@@ -464,24 +463,23 @@ function f(n) {
 		}
 		?>
 
-	<div>
+	<div align="righ">
+
 					<a href="<?php echo $fileurl;?>" class="<?php echo $class;?>"
 						<?php echo $thumb2;?>> <img
 						src="<?php echo $includeurl; ?>dlf/<?php echo $icon;?>"
-						alt="<?php echo $files[$i];?>" />
-						<strong>
-								<?php
-								foreach ($dealer as $v){
-									echo "$v";
-									}
-								?>
-										</strong>
-						<!-- <em> <input type="button"></em> --> <strong><?php echo $filename;?></strong>
-						<em><?php echo round(filesize($includeurl.$leadon.$files[$i])/1024);?>KB</em>
+						alt="<?php echo $files[$i];?>" /> <em> <input type="button"></em>
+						<strong><?php echo $filename;?></strong> <em><?php echo round(filesize($includeurl.$leadon.$files[$i])/1024);?>KB</em>
 
 		<?php echo date ("M d Y h:i:s A", filemtime($includeurl.$leadon.$files[$i]));?><?php echo $thumb;?>
 
 	</a>
+	<div align="left">
+	<?php
+		foreach ( $dealer as $value )
+			echo "$value </br>";
+		?>
+	</div>
 				</div>
 	<?php
 		if ($class == 'b')
