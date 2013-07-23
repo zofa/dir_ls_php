@@ -450,36 +450,34 @@ function f(n) {
 			$fileurl = $_SESSION ['PHP_SELF'] . '?dir=' . urlencode ( str_replace ( $startdir, '', $leadon ) ) . '&download=' . urlencode ( $files [$i] );
 		}
 		
-		$dealer;
 		
-		$f_handle = fopen($file,"r");		
-		echo $file;
-		$first_line = fgetcsv($file,"|");
-		$dealer = $first_line[6];
-		
+// 		 obtaning dealer infor column 6
+		if ($f_handle = fopen ( $includeurl . $leadon . $file, "r" )) {
+			$first_line = fgetcsv ( $f_handle, "|" );
+			$dealer = $first_line [6] . "  ";
+			
+			fclose ( $fhandle );
+			
+			echo $dealer;
+			echo $first_line;
+		} else {
+			echo error_get_last ();
+		}
 		?>
 
 	<div>
-	
-	
-	<a	
-		
-		href="<?php echo $fileurl;?>" class="<?php echo $class;?>" <?php echo $thumb2;?>>
-		
-		<img src="<?php echo $includeurl; ?>dlf/<?php echo $icon;?>" alt="<?php echo $files[$i];?>" /> 
-		
-		<em><?php echo $dealer ;?></em>
-		
-		<!-- <em> <input type="button"></em> -->
-		
-		<strong><?php echo $filename;?></strong>
-		
-		<em><?php echo round(filesize($includeurl.$leadon.$files[$i])/1024);?>KB</em> 
+					<a href="<?php echo $fileurl;?>" class="<?php echo $class;?>"
+						<?php echo $thumb2;?>> <img
+						src="<?php echo $includeurl; ?>dlf/<?php echo $icon;?>"
+						alt="<?php echo $files[$i];?>" /> 
+						<em><?php echo $dealer;?></em> 
+						<!-- <em> <input type="button"></em> -->
+						<strong><?php echo $filename;?></strong> <em><?php echo round(filesize($includeurl.$leadon.$files[$i])/1024);?>KB</em> 
 		
 		<?php echo date ("M d Y h:i:s A", filemtime($includeurl.$leadon.$files[$i]));?><?php echo $thumb;?>
 	
 	</a>
-	</div>
+				</div>
 	<?php
 		if ($class == 'b')
 			$class = 'w';
